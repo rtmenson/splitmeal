@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>
+    Diners
+    <a href="/diners/new" class="btn btn-lg btn-success">New Diner</a>
+  </h1>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-hover">
+      <tr>
+        <th>User</th>
+        <th>Avatar</th>
+        <th>Party</th>
+        <th> Diner Id </th>
+        <th>Actions</th>
+      </tr>
+
+      <% @diners.each do |diner| %>
+      <tr>
+        <td><%= diner.user.username %></td>
+        <td><img width=200 height=200 src="<%= diner.user.image %>"></td>
+        <td><%= diner.party_id %></td>
+        <td><%= diner.id %></td>
+        <td>
+          <a href="/diners/<%= diner.id %>" class="btn btn-primary">Show</a>
+          <a href="/diners/<%= diner.id %>/edit" class="btn btn-warning">Edit</a>
+          <a href="/delete_diner/<%= diner.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

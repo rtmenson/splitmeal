@@ -1,0 +1,54 @@
+<!-- Validation failure messages -->
+<% if @order.errors.any? %>
+  <% @order.errors.full_messages.each do |message| %>
+    <div class="alert alert-dismissable alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+      <%= message %>
+    </div>
+  <% end %>
+<% end %>
+
+<div class="page-header">
+  <h3>Edit Order #<%= @order.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <form action="/update_order/<%= @order.id %>" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for menu_item_id -->
+      <div class="form-group">
+        <label for="menu_item_id" class="control-label">
+          Menu item
+        </label>
+
+        <input type="text" id="menu_item_id" name="menu_item_id" placeholder="Menu item" class="form-control" value="<%= @order.menu_item_id %>">
+      </div>
+
+      <!-- Label and input for party_id -->
+      <div class="form-group">
+        <label for="party_id" class="control-label">
+          Party
+        </label>
+
+        <input type="text" id="party_id" name="party_id" placeholder="Party" class="form-control" value="<%= @order.party_id %>">
+      </div>
+
+      <!-- Label and input for is_shared -->
+      <div class="checkbox">
+        <label for="is_shared">
+          <input type="checkbox" id="is_shared" name="is_shared" value="1" <%= "checked" if @order.is_shared %>>
+          Is shared
+        </label>
+      </div>
+
+      <button class="btn btn-warning">
+        Update Order
+      </button>
+      or
+      <a href="/orders/<%= @order.id %>">Cancel</a>
+    </form>
+  </div>
+</div>

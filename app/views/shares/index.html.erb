@@ -1,0 +1,32 @@
+<div class="page-header">
+  <h1>
+    Shares
+    <a href="/shares/new" class="btn btn-lg btn-success">New Share</a>
+  </h1>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-hover">
+      <tr>
+        <th>Order</th>
+        <th>Proportion</th>
+        <th>User</th>
+        <th>Actions</th>
+      </tr>
+
+      <% @shares.each do |share| %>
+      <tr>
+        <td><%= share.order_id %></td>
+        <td><%= share.proportion %></td>
+        <td><%= share.user_id %></td>
+        <td>
+          <a href="/shares/<%= share.id %>" class="btn btn-primary">Show</a>
+          <a href="/shares/<%= share.id %>/edit" class="btn btn-warning">Edit</a>
+          <a href="/delete_share/<%= share.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>

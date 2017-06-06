@@ -1,0 +1,31 @@
+<div class="page-header">
+  <h3>Share #<%= @share.id %></h3>
+</div>
+
+<div class="row">
+  <div class="col-md-12 mb-2">
+    <dl class="dl-horizontal">
+      <dt>Order</dt>
+      <dd><%= @share.order_id %></dd>
+
+      <dt>Proportion</dt>
+      <dd><%= @share.proportion %></dd>
+
+      <dt>User</dt>
+      <dd><%= @share.user_id %></dd>
+
+    </dl>
+
+    <div class="btn-group btn-group-justified">
+      <a href="/shares" class="btn btn-primary">
+        Back
+      </a>
+      <a href="/shares/<%= @share.id %>/edit" class="btn btn-warning">
+        Edit
+      </a>
+      <a href="/delete_share/<%= @share.id %>" class="btn btn-danger" rel="nofollow">
+        Delete
+      </a>
+    </div>
+  </div>
+</div>

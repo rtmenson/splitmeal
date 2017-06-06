@@ -1,0 +1,34 @@
+<div class="page-header">
+  <h1>
+    Parties
+    <a href="/parties/new" class="btn btn-lg btn-success">New Party</a>
+  </h1>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-striped table-hover">
+      <tr>
+        <th>Name</th>
+        <th>Size</th>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Actions</th>
+      </tr>
+
+      <% @parties.each do |party| %>
+      <tr>
+        <td><%= party.name %></td>
+        <td><span class="badge"><%= party.diners.count %></div><span></td>
+        <td><%= party.start_date %></td>
+        <td><%= party.end_date %></td>
+        <td>
+          <a href="/parties/<%= party.id %>" class="btn btn-primary">Show</a>
+          <a href="/parties/<%= party.id %>/edit" class="btn btn-warning">Edit</a>
+          <a href="/delete_party/<%= party.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
