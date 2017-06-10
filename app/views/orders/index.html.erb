@@ -17,9 +17,13 @@
 
       <% @orders.each do |order| %>
       <tr>
-        <td><%= order.menu_item_id %></td>
-        <td><%= order.party_id %></td>
-        <td><%= order.is_shared %></td>
+        <td><%= order.menu_item.name %></td>
+        <td><%= order.party.name %></td>
+        <% if order.is_shared == true %>
+        <td> Yes </td>
+        <% else %>
+        <td> No </td>
+        <% end %>
         <td>
           <a href="/orders/<%= order.id %>" class="btn btn-primary">Show</a>
           <a href="/orders/<%= order.id %>/edit" class="btn btn-warning">Edit</a>

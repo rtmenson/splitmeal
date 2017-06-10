@@ -1,7 +1,7 @@
 <div class="page-header">
   <h1>
-    Menu items
-    <a href="/menu_items/new" class="btn btn-lg btn-success">New Menu item</a>
+    Menu Items
+    <a href="/menu_items/new" class="btn btn-lg btn-success">Add New Menu Item</a>
   </h1>
 </div>
 
@@ -19,7 +19,7 @@
       <tr>
         <td><img width=200 height=200 src="<%= menu_item.image %>"></td>
         <td><%= menu_item.name %></td>
-        <td><%= menu_item.price %></td>
+        <td><%=number_to_currency( menu_item.price) %></td>
         <td>
           <a href="/menu_items/<%= menu_item.id %>" class="btn btn-primary">Show</a>
           <a href="/menu_items/<%= menu_item.id %>/edit" class="btn btn-warning">Edit</a>

@@ -1,4 +1,23 @@
 Rails.application.routes.draw do
+
+  post "create_multi_shares", :controller =>"shares", :action => "create_multi_shares"
+  # Routes for the Owner resource:
+  # CREATE
+  get "/owners/new", :controller => "owners", :action => "new"
+  post "/create_owner", :controller => "owners", :action => "create"
+
+  # READ
+  get "/owners", :controller => "owners", :action => "index"
+  get "/owners/:id", :controller => "owners", :action => "show"
+
+  # UPDATE
+  get "/owners/:id/edit", :controller => "owners", :action => "edit"
+  post "/update_owner/:id", :controller => "owners", :action => "update"
+
+  # DELETE
+  get "/delete_owner/:id", :controller => "owners", :action => "destroy"
+  #------------------------------
+
   root to: "parties#index"
   # Routes for the Diner resource:
   # CREATE

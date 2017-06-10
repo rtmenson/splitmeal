@@ -9,7 +9,9 @@
   <div class="col-md-12">
     <table class="table table-striped table-hover">
       <tr>
+        <th>Party</th>
         <th>Order</th>
+        <th> Price </th>
         <th>Proportion</th>
         <th>User</th>
         <th>Actions</th>
@@ -17,9 +19,11 @@
 
       <% @shares.each do |share| %>
       <tr>
-        <td><%= share.order_id %></td>
+        <td><a href="/parties/<%=share.order.party.id%>"><%= share.order.party.name %></a></td>
+        <td><a href="/menu_items/<%=share.order.menu_item.id%>"><%= share.order.menu_item.name %></a></td>
+        <td><%= number_to_currency(share.order.menu_item.price) %></td>
         <td><%= share.proportion %></td>
-        <td><%= share.user_id %></td>
+        <td><a href="/users/<%=share.user.id%>"><%= share.user.username.capitalize %></a></td>
         <td>
           <a href="/shares/<%= share.id %>" class="btn btn-primary">Show</a>
           <a href="/shares/<%= share.id %>/edit" class="btn btn-warning">Edit</a>

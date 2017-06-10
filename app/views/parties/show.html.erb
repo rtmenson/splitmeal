@@ -1,92 +1,328 @@
 <div class="page-header">
-  <h3><%= @party.name %></h3>
-  <h4>Party #<%= @party.id %></h4>
+  <h3>Party: <%= @party.name %></h3>
+  <h5>Party #<%= @party.id %></h5>
+
+
+
+</div>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-xs-6 col-md-4">
+      <dl class="dl vertical">
+        <dt>Name</dt>
+        <dd><%= @party.name %></dd>
+
+        <dt>Size</dt>
+        <dd><span class="badge"><%= @party.diners.count %></span></dd>
+
+        <dt>Start date</dt>
+        <dd><%= @party.start_date %></dd>
+
+        <dt>End date</dt>
+        <dd><%= @party.end_date %></dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <br />
+
+        <div class="panel panel-default">
+
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              Add a Menu Item
+            </h4>
+          </div>
+    <div class="panel-body">
+      <form action="/create_order" method="post">
+        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="party_id" value="<%=@party.id%>">
+        <% @options = options_from_collection_for_select(MenuItem.all, :id, :name) %>
+        <div class="drop-down">
+          <%= select_tag(:menu_item_id, @options, :class => "form-control") %>
+        </div>
+
+        <span class="input-group-btn">
+          <button class="btn btn-primary" type="submit">
+            Order
+          </button>
+        </span>
+
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+  <div class="row">
+
+
+    <% unless !(current_user.diners.any? {|d| d.user_id == current_user.id }) %>
+    <div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <br />
+
+        <div class="panel panel-default">
+
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              Add a Diner
+            </h4>
+          </div>
+
+          <div class="panel-body">
+            <form action="/create_diner" method="post">
+              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+              <input type="hidden" name="party_id" value="<%=@party.id%>">
+
+              <div class="drop-down">
+                  <%= select_tag(:user_id, options_from_collection_for_select(User.order("username ASC"), :id, :username), :class => "form-control") %>
+              </div>
+
+              <br />
+              <br />
+
+              <span class="input-group-btn" align="center" >
+                <button class="btn btn-default" type="submit" >
+                  <i class="fa fa-plus"></i>
+                </button>
+              </span>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
+        <div class="col-xs-6 col-md-3">
+          <div class="thumbnail">
+            <br />
+
+        <div class="panel panel-default">
+
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              Total for Party
+            </h4>
+          </div>
+
+          <div class="panel-body">
+              <p> This party owes: </p>
+              <% @total = 0 %>
+              <% @party.orders.each do |order| %>
+                <% @total += order.menu_item.price %>
+              <% end %>
+              <h4 align="center"> <%= number_to_currency(@total) %> </h4>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 col-md-3">
+      <div class="thumbnail">
+        <br />
+
+    <div class="panel panel-default">
+
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          Total for you <%= current_user.username.capitalize %>
+        </h4>
+      </div>
+
+      <div class="panel-body">
+          <p> You owe: </p>
+          <% @total = 0 %>
+          <% @party.orders.each do |order| %>
+          <% order.shares.each do |share| %>
+            <% if share.user_id == current_user.id %>
+              <% @total += share.proportion * share.order.menu_item.price %>
+            <% end %>
+          <% end %>
+          <% end %>
+          <h4 align="center"> <%= number_to_currency(@total) %> </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+      </div>
+
+
+    <!--
+    <div class="media-body">
+    <form action="/create_diner" method="post">
+    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+    <input type="hidden" name="party_id" value="<%=@party.id%>">
+
+    <div class="drop-down">
+    <%= select_tag(:user_id, options_from_collection_for_select(User.order("username ASC"), :id, :username), :class => "form-control") %>
+  </div>
+
+  <span class="input-group-btn">
+  <button class="btn btn-default" type="submit">
+  Add Diner <i class="fa fa-plus"></i>
+</button>
+</span>
+
+</form>
+</div> -->
+
+
+<div class="row">
+<div class="col-md-12 mb-2">
+  <dl class="dl-horizontal">
+
+    <div class="panel panel-default" >
+      <div class="panel-heading">
+        <h4 class="panel-title"> Diners</h4>
+      </div>
+      <div class="panel-body">
+
+
+        <div class="row">
+          <% @party.diners.each do |diner| %>
+
+          <div class="col-xs-6 col-md-3">
+            <div class="jumbotron">
+              <div class="thumbnail">
+                <img height=150px src="<%= diner.user.image%>"><br />
+
+                <div class="panel panel-default">
+
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <%=diner.user.username%>
+                    </h4>
+                  </div>
+
+                  <div class="panel-body">
+                    <p>...</p>
+                  </div>
+                </div>
+
+                <p> <a href="/users/<%= diner.user.id%>" class="btn btn-primary" role="button">Details</a>
+                  <% if current_user.id == diner.user.id %>
+                  <a href="/delete_diner/<%= diner.id%>" class="btn btn-danger" role="button">Remove Me</a>
+                  <% end %>
+                </p>
+              </div>
+            </div>
+          </div>
+          <%end%>
+        </div>
+      </div>
+
+      <br />
+
+    </div>
+  </div>
 </div>
 
 <div class="row">
   <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>Name</dt>
-      <dd><%= @party.name %></dd>
-
-      <dt>Size</dt>
-      <dd><span class="badge"><%= @party.diners.count %></span></dd>
-
-      <dt>Start date</dt>
-      <dd><%= @party.start_date %></dd>
-
-      <dt>End date</dt>
-      <dd><%= @party.end_date %></dd>
 
 
-      <dt>Diners</dt>
-      <dd>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title"> Orders</h4>
+      </div>
+      <div class="panel-body">
+
+
         <div class="row">
-        <% @party.diners.each do |diner| %>
+          <% @party.orders.each do |order| %>
 
-
-          <div class="col-sm-6 col-md-4">
+          <div class="col-xs-6 col-md-3">
             <div class="jumbotron">
               <div class="thumbnail">
-                <img width=120 height=100 src="<%= diner.user.image%>" alt="..."><br />
-              <!--
-              <div class="caption">
-                <h4> <%=diner.user.username%></h4>
-                <p>...</p>
-                <p><a href="#" class="btn btn-primary" role="button">Order</a> <a href="#" class="btn btn-primary" role="button">See Details</a></p>
-              </div> -->
-              <div class="panel panel-default">
-                <div class="panel-heading">
-                  <h4 class="panel-title">
-                  <%=diner.user.username%>
-                </h4>
+                <img width=120 height=100 src="<%= order.menu_item.image%>"><br />
+
+                <div class="panel panel-default">
+
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      <%=order.menu_item.name%>
+                    </h4>
+                  </div>
+
+                  <div class="panel-body">
+                    <p><%=number_to_currency(order.menu_item.price)%></p>
+                  </div>
                 </div>
-                <div class="panel panel-body">
-                  <p>...</p>
-                </div>
+
+                <% if order.is_shared == false || order.is_shared == nil %>
+                <div class="btn-group btn-group-justified">
+                  <form action="/create_multi_shares" method="post">
+                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+                    <input type="hidden" name="party_id" value="<%=@party.id%>">
+                    <input type="hidden" name="order_id" value="<%=order.id%>">
+                    <div class="drop-down">
+                      <% @options = options_from_collection_for_select(order.party.diners, :user_id, :user_name) %>
+                      <%= select_tag(:sharers_user_ids, @options, :multiple => true, :class => "form-control") %>
+                    </div>
+
+                    <span class="input-group-btn">
+                      <button class="btn btn-warning" type="submit">
+                        Share
+                      </button>
+                    </span>
+
+
+                  </form>
+
+              </div>
+              <% else %>
+                <% @the_sharers = [] %>
+                <% order.shares.each do |share| %>
+                  <% @the_sharers << User.all.find_by(:id => share.user_id).username %>
+                <% end %>
+                <h5 align="center"> Already shared between <small> <%= @the_sharers.to_sentence%><small></h5>
+              <% end %>
+              <br />
+
+              <div class="btn-group btn-group-justified">
+                <a href="/delete_order/<%= order.id%>" class="btn btn-danger">
+                  Delete
+                </a>
               </div>
 
-            <p><a href="#" class="btn btn-primary" role="button">Order</a> <a href="#" class="btn btn-primary" role="button">Details</a></p>
+              </div>
 
-            </div>
             </div>
           </div>
-
-       <%end%>
-       </div>
-      </dd>
-
-    </dl>
-
-
-    <div class="media-body">
-      <form action="/create_diner" method="post">
-        <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-        <input type="hidden" name="party_id" value="<%=@party.id%>">
-
-        <span class="input-group-btn">
-          <button class="btn btn-default" type="submit">
-            Add Diner <i class="fa fa-user"></i>
-          </button>
-        </span>
-
-        <div class="form-group">
-          <%= select_tag(:user_id, options_from_collection_for_select(User.order("username ASC"), :id, :username), :class => "form-control") %>    
+          <%end%>
         </div>
 
-      </form>
-    </div>
 
-    <div class="btn-group btn-group-justified">
-      <a href="/parties" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/parties/<%= @party.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_party/<%= @party.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
+      </div>
+
+      <br />
+
+      <div class="btn-group btn-group-justified">
+        <a href="/parties" class="btn btn-primary">
+          Back
+        </a>
+        <a href="/parties/<%= @party.id %>/edit" class="btn btn-warning">
+          Edit
+        </a>
+        <%  unless !(Owner.all.any? {|o| o.user_id == current_user.id }) %>
+        <a href="/delete_party/<%= @party.id %>" class="btn btn-danger" rel="nofollow">
+          Delete
+        </a>
+        <% end %>
+      </div>
+
+
     </div>
   </div>
 </div>
+</div>
+  </div>

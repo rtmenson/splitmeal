@@ -27,7 +27,8 @@ class OrdersController < ApplicationController
     save_status = @order.save
 
     if save_status == true
-      redirect_to("/orders/#{@order.id}", :notice => "Order created successfully.")
+      #redirect_to("/orders/#{@order.id}", :notice => "Order created successfully.")
+      redirect_back(:fallback_location => root_url, :notice => "The #{@order.menu_item.name} was successfully created!")
     else
       render("orders/new.html.erb")
     end

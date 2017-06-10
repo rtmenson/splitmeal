@@ -13,3 +13,16 @@
  *= require_tree .
  *= require_self
  */
+
+.thumbnail img {
+  width:150px;
+  height: 170px;
+}
+
+.jumbotron .thumbnail{
+  height: 450px;
+}
+
+.panel {
+
+}

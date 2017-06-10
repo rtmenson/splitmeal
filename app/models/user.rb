@@ -5,5 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   validates :id, uniqueness: true
   has_many :shares, :dependent => :destroy
+  has_many :owners, :dependent => :destroy
+  has_many :diners, :dependent => :destroy
 #  belongs_to :party
+
 end

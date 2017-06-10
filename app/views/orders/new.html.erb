@@ -24,7 +24,10 @@
           Menu item
         </label>
 
-        <input type="text" id="menu_item_id" name="menu_item_id" placeholder="Menu item" class="form-control" value="<%= @order.menu_item_id %>">
+        <!--<input type="text" id="menu_item_id" name="menu_item_id" placeholder="Menu item" class="form-control" value="<%= @order.menu_item_id %>"> -->
+        <div class="drop-down">
+          <%= select_tag(:id, options_from_collection_for_select(MenuItem.all, :id, :name), :class => "form-control") %>
+        </div>
       </div>
 
       <!-- Label and input for party_id -->
